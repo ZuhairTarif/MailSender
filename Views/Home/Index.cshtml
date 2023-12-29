@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+
+
+@using (Html.BeginForm("SendMail", "Home", FormMethod.Post))
+{
+    <input type="text" name="username" placeholder="Enter the receiver name" />
+    <input type="text" name="receiver" placeholder="Enter the receiver mail" />
+    <input type="submit" value="Send" />
+}
