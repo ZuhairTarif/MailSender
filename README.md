@@ -1,1 +1,1 @@
-# mail
+You can use this to send emails and pass variables in the template. To use give your credentials on the Web.Config and most importantly give your mail server and port number on the network host and port.
