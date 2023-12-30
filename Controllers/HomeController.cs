@@ -21,7 +21,7 @@ namespace mail.Controllers
 
 
         [HttpPost]
-        public ActionResult SendMail(string username, string receiver)
+        public ActionResult SendMail(string username, string receiver, string ccEmail)
         {
             
             string title = "My Portfolio";
@@ -29,7 +29,7 @@ namespace mail.Controllers
             string description = "Here is my Portfolio";
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             string body = PopulateBody(username, title, url, description);
-            SendHtmlFormattedEmail(receiver, "My Portfolio published!", body);
+            SendHtmlFormattedEmail(receiver, "My Portfolio published!", body, ccEmail);
             return Content("Email sent successfully.");
         }
 
@@ -47,7 +47,7 @@ namespace mail.Controllers
             return body;
         }
 
-        private void SendHtmlFormattedEmail(string recepientEmail, string subject, string body)
+        private void SendHtmlFormattedEmail(string recepientEmail, string subject, string body, string ccEmail)
         {
             SmtpSection smtpSection = (SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");
 
@@ -56,6 +56,10 @@ namespace mail.Controllers
                 mm.Subject = subject;
                 mm.Body = body;
                 mm.IsBodyHtml = true;
+                if (!string.IsNullOrEmpty(ccEmail))
+                {
+                    mm.CC.Add(new MailAddress(ccEmail));
+                }
                 using (SmtpClient smtp = new SmtpClient())
                 {
                     smtp.Host = smtpSection.Network.Host;
